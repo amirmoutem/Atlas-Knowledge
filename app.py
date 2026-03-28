@@ -4,6 +4,7 @@ import aibrain
 
 user_usage = {}
 MAX_MESSAGES = 15
+
 def log_student_question(level, message):
     snake_level = str(level).replace(",", "_")
     filename = f"log_{snake_level}.txt"
@@ -25,27 +26,20 @@ def chat(user_input, history, level, pdf_file, request: gr.Request):
     if user_usage[client_ip] >= MAX_MESSAGES:
         limit = "Vous avez fini votre max de questions du jour, veuillez reviser le matériel."
         history.append({"role": "user", "content": str(user_input)})
-    # 2. Add an EMPTY Assistant message for the stream to fill
         history.append({"role": "assistant", "content": limit})
         yield history, history, ""
         return
     user_usage[client_ip] += 1
-    # 1. Add User message to history immediately
+    
     history.append({"role": "user", "content": str(user_input)})
-    # 2. Add an EMPTY Assistant message for the stream to fill
     history.append({"role": "assistant", "content": ""})
 
     try:
-       
-        
-        
-        for chunk in atlas_app(user_input, level, pdf_file):
+        # THE FIX: Added 'history' to the function call below
+        for chunk in atlas_app(user_input, level, pdf_file, history):
             history[-1]["content"] = chunk
-            
-            # Yield the history so the UI updates word-by-word
             yield history, history, ""
             
-        # 5. Log it ONLY after the loop is finished
         log_student_question(level, user_input)
 
     except Exception as e:
@@ -55,18 +49,17 @@ def chat(user_input, history, level, pdf_file, request: gr.Request):
 
 def handle_director_dashboard(level, password):
     if password == "ExcellenceX": 
-        # Loop to handle the streaming report
         for chunk in aibrain.get_pedagogical_report(level):
             yield chunk
     else:
         yield "## ❌ Accès Refusé\nLe mot de passe est incorrect. Veuillez contacter l'administrateur d'Atlas Knowledge."
 
 theme1 = gr.themes.Soft(
-    primary_hue="cyan", # The "Neon" glow
-    secondary_hue="slate", # Professional dark gray
-    neutral_hue="slate", # Dark background
+    primary_hue="cyan", 
+    secondary_hue="slate", 
+    neutral_hue="slate", 
 ).set(
-    body_background_fill="*neutral_950", # Deep black/blue background
+    body_background_fill="*neutral_950", 
     block_background_fill="*neutral_900",
     block_border_width="1px",
     button_primary_background_fill="*primary_500",
@@ -75,6 +68,7 @@ theme1 = gr.themes.Soft(
     block_label_text_color="*neutral_50",
     body_text_color_subdued="*neutral_300",
 )
+
 with gr.Blocks() as demo:
     gr.Markdown("## Upload a pdf file")
     file = gr.File(label="Upload PDF", file_types=[".pdf"])
@@ -86,9 +80,7 @@ with gr.Blocks() as demo:
         label="Choose your level"
     )
 
-    chatbot = gr.Chatbot(render_markdown=True, latex_delimiters=[{"left": "$$", "right": "$$", "display": True}, {"left": "$", "right": "$", "display": False}
-                                                                 ]
-                                                                 )  # no type argument
+    chatbot = gr.Chatbot(render_markdown=True, latex_delimiters=[{"left": "$$", "right": "$$", "display": True}, {"left": "$", "right": "$", "display": False}])
 
     textbox = gr.Textbox(
         placeholder="Type your message here...",
@@ -109,18 +101,15 @@ with gr.Blocks() as demo:
     with gr.Accordion("🔒 Espace Direction", open=False):
      with gr.Row():
         grade_input = gr.Dropdown(["Niveau","3AC", "2AC", "1AC", "CE6"], label="Classe")
-        # Ensure type="password" so the characters are hidden while typing
         pass_input = gr.Textbox(label="Code d'accès", type="password") 
     
     gen_btn = gr.Button("Générer le Rapport Stratégique", variant="primary")
     output_markdown = gr.Markdown()
 
-    # THE CONNECTION
     gen_btn.click(
         fn=handle_director_dashboard, 
-        inputs=[grade_input, pass_input], # Both inputs are sent to the function
+        inputs=[grade_input, pass_input], 
         outputs=output_markdown
     )
 
-demo.launch(
-theme=theme1)
+demo.launch(theme=theme1)
