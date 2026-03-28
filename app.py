@@ -119,5 +119,5 @@ with gr.Blocks() as demo:
         outputs=output_markdown
     )
 
-demo.launch(share=True,
-theme=theme1,)
+demo.launch(
+theme=theme1)
