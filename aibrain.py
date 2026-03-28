@@ -4,7 +4,7 @@ import memory
 import os
 
 # Secure API key (set this in your environment)
-client = genai.Client(api_key="AIzaSyBNGPsfL9TuWfDO_sZ2FQ6rf0NjbSRGFnQ")
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # 🔹 Helper function (avoids repeating code)
 def generate_response(prompt, pdf_file=None):
