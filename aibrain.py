@@ -79,7 +79,7 @@ def get_pedagogical_report(selected_grade):
 
         director_prompt = f"""
         Tu es un expert en ingénierie pédagogique au Maroc. 
-        Voici les questions posées par les élèves de {selected_grade} :
+        Voici les questions posées par les élèves de {selected_grade}, coincide le rapport avec la date d'aujourd'hui, et n'ecris pas [Votre nom] dans le sans le nom. soit concret avec votre reponse:
         
         {logs}
         
@@ -87,6 +87,7 @@ def get_pedagogical_report(selected_grade):
         - TOP 3 des sujets les plus complexes.
         - Analyse des blocages types.
         - Conseil stratégique pour le prochain cours.
+        - Recommendation à destination du corps professoral.
         """
 
         for chunk in generate_response(director_prompt, None):
