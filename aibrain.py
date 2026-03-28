@@ -14,18 +14,14 @@ def generate_response(prompt, pdf_file=None):
      if pdf_file is not None:
         with open (pdf_file, "rb") as f:
             pdf_bytes = f.read()
-        model1 = "gemini-3-flash"
-        except:
-          model1 = "gemini-2.5-flash"
+        model1 = "gemini-2.5-flash"
         response = client.models.generate_content_stream(model=model1, contents=[prompt, types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")])
         partial_message = ""
         for chunk in response:
             partial_message += chunk.text
             yield partial_message
      else:
-        model1 = "gemini-3.0-flash"
-        except:
-            model1 = "gemini-2.5-flash"
+        model1 = "gemini-2.5-flash"
         response = client.models.generate_content_stream(model=model1, contents=prompt)
         partial_message=""
         for chunk in response:
