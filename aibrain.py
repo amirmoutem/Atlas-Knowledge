@@ -14,13 +14,13 @@ def generate_response(prompt, pdf_file=None):
      if pdf_file is not None:
         with open (pdf_file, "rb") as f:
             pdf_bytes = f.read()
-        response = client.models.generate_content_stream(model="gemini-3.0-flash-preview", contents=[prompt, types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")])
+        response = client.models.generate_content_stream(model="gemini-3-flash-preview", contents=[prompt, types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")])
         partial_message = ""
         for chunk in response:
             partial_message += chunk.text
             yield partial_message
      else:
-        response = client.models.generate_content_stream(model="gemini-3.0-flash-preview", contents=prompt)
+        response = client.models.generate_content_stream(model="gemini-3-flash-preview", contents=prompt)
         partial_message=""
         for chunk in response:
             partial_message += chunk.text
