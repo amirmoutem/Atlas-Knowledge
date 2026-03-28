@@ -1,10 +1,22 @@
-from google import genai
-from google.genai import types
-import memory
 import os
+import random
+from google import genai
 
-# Secure API key (set this in your environment)
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+# List of all your keys from environment variables
+API_KEYS = [
+    os.getenv("KEY1"),
+    os.getenv("KEY2"),
+    os.getenv("KEY3"),
+    os.getenv("KEY4"),
+    os.getenv("KEY5")
+]
+
+# REMOVE the global client = genai.Client(...) line
+
+def get_random_client():
+    """Picks a random key to spread the load across all 5 quotas."""
+    selected_key = random.choice([k for k in API_KEYS if k]) # Filters out empty keys
+    return genai.Client(api_key=selected_key)
 
 # 🔹 Helper function (avoids repeating code)
 def generate_response(prompt, pdf_file=None):
