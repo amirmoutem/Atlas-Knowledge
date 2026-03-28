@@ -71,6 +71,9 @@ theme1 = gr.themes.Soft(
     block_border_width="1px",
     button_primary_background_fill="*primary_500",
     button_primary_text_color="white",
+    body_text_color="*neutral_50"
+    block_label_text_color="*neutral_50"
+    body_text_color_subdued="*neutral_300"
 )
 with gr.Blocks() as demo:
     gr.Markdown("## Upload a pdf file")
