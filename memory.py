@@ -1,19 +1,24 @@
 from prompt import prompt3AC, prompt1BAC, prompt2BAC, promptTC
 
-conversation = []
-def add_user(msg):
-  conversation.append("User: "+ msg)
-def add_ai(msg):
-   conversation.append("Assistant: "+ msg)
-def memory3AC():
- full_prompt3AC = prompt2BAC + "\n".join(conversation)
- return full_prompt3AC
-def memoryTC():
- full_promptTC = prompt1BAC + "\n".join(conversation)
- return full_promptTC
-def memory1BAC():
- full_prompt1BAC = promptTC + "\n".join(conversation)
- return full_prompt1BAC
-def memory2BAC():
- full_prompt2BAC = prompt3AC + "\n".join(conversation)
- return full_prompt2BAC
+def format_history(history):
+    conv = []
+    if history:
+        # Skip the last 2 items (the current question & empty assistant box added by app.py)
+        for msg in history[:-2]: 
+            if msg["role"] == "user":
+                conv.append("User: " + str(msg["content"]))
+            elif msg["role"] == "assistant" and msg["content"]:
+                conv.append("Assistant: " + str(msg["content"]))
+    return "\n".join(conv)
+
+def memory3AC(history):
+    return prompt2BAC + "\n" + format_history(history)
+
+def memoryTC(history):
+    return prompt1BAC + "\n" + format_history(history)
+
+def memory1BAC(history):
+    return promptTC + "\n" + format_history(history)
+
+def memory2BAC(history):
+    return prompt3AC + "\n" + format_history(history)
