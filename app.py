@@ -79,7 +79,7 @@ with gr.Blocks() as demo:
     history = gr.State(value=[])
 
     dropdown = gr.Dropdown(
-        ["Niveau","CE6", "1AC", "2AC", "3AC"],
+        ["Niveau","3AC", "2AC", "1AC", "CE6"],
         label="Choose your level"
     )
 
@@ -105,7 +105,7 @@ with gr.Blocks() as demo:
     )
     with gr.Accordion("🔒 Espace Direction", open=False):
      with gr.Row():
-        grade_input = gr.Dropdown(["Niveau","CE6", "1AC", "2AC", "3AC"], label="Classe")
+        grade_input = gr.Dropdown(["Niveau","3AC", "2AC", "1AC", "CE6"], label="Classe")
         # Ensure type="password" so the characters are hidden while typing
         pass_input = gr.Textbox(label="Code d'accès", type="password") 
     
