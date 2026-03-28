@@ -31,50 +31,28 @@ def generate_response(prompt, pdf_file=None):
         yield f"Error: {str(e)}"
 
 # 🔵 3AC
-def atlas3AC(userinput, pdf_file=None):
-    prompt = memory.memory3AC() + "\nUser: " + userinput
-    
-    final_answer = ""
-    # We loop through the generator to get the actual text
+def atlas3AC(userinput, pdf_file=None, history=[]):
+    prompt = memory.memory3AC(history) + "\nUser: " + userinput
     for chunk in generate_response(prompt, pdf_file):
-        final_answer = chunk
-        yield chunk # Send the text to the screen
-        
-    # ONLY save to memory after the loop is finished
-    memory.add_ai(final_answer)
+        yield chunk
 
 # 🟢 TC
-def atlasTC(userinput, pdf_file=None):
-    prompt = memory.memoryTC() + "\nUser: " + userinput
-
-    final_answer = ""
+def atlasTC(userinput, pdf_file=None, history=[]):
+    prompt = memory.memoryTC(history) + "\nUser: " + userinput
     for chunk in generate_response(prompt, pdf_file):
-        final_answer = chunk
         yield chunk
-
-    memory.add_ai(final_answer)
 
 # 🟡 1BAC
-def atlas1BAC(userinput, pdf_file=None):
-    prompt = memory.memory1BAC() + "\nUser: " + userinput
-
-    final_answer = ""
+def atlas1BAC(userinput, pdf_file=None, history=[]):
+    prompt = memory.memory1BAC(history) + "\nUser: " + userinput
     for chunk in generate_response(prompt, pdf_file):
-        final_answer = chunk
         yield chunk
-
-    memory.add_ai(final_answer)
 
 # 🔴 2BAC
-def atlas2BAC(userinput, pdf_file=None):
-    prompt = memory.memory2BAC() + "\nUser: " + userinput
-
-    final_answer = ""
+def atlas2BAC(userinput, pdf_file=None, history=[]):
+    prompt = memory.memory2BAC(history) + "\nUser: " + userinput
     for chunk in generate_response(prompt, pdf_file):
-        final_answer = chunk
         yield chunk
-
-    memory.add_ai(final_answer)
 
 def get_pedagogical_report(selected_grade):
     """
@@ -111,10 +89,8 @@ def get_pedagogical_report(selected_grade):
         - Conseil stratégique pour le prochain cours.
         """
 
-        # Loop through the generator so the Markdown output streams properly!
         for chunk in generate_response(director_prompt, None):
             yield chunk
 
     except Exception as e:
         yield f"Erreur lors de la génération du rapport : {str(e)}"
-
