@@ -69,7 +69,7 @@ theme1 = gr.themes.Soft(
     body_text_color_subdued="*neutral_300",
 )
 
-with gr.Blocks(title="AtlasKnowledge: Infrastructure IA Pédagogique") as demo:
+with gr.Blocks(title="AtlasKnowledge: Infrastructure IA Pédagogique | Atlantis") as demo:
     gr.Markdown("""
     # 🏛️ AtlasKnowledge
     **Infrastructure IA Pédagogique Officielle**
