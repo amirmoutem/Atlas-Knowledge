@@ -5,6 +5,12 @@ import aibrain
 user_usage = {}
 MAX_MESSAGES = 15
 
+head_js = """
+<script>
+    document.documentElement.classList.add('dark');
+</script>
+"""
+
 def log_student_question(level, message):
     snake_level = str(level).replace(",", "_")
     filename = f"log_{snake_level}.txt"
@@ -119,4 +125,4 @@ with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
         outputs=output_markdown
     )
 
-demo.launch(theme=theme1)
+demo.launch(theme=theme1, head=head_js)
