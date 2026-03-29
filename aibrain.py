@@ -1,7 +1,7 @@
 import os
 import random
 from google import genai
-
+import memory
 # List of all your keys from environment variables
 API_KEYS = [
     os.getenv("KEY1"),
