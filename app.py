@@ -72,9 +72,9 @@ theme1 = gr.themes.Soft(
 with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
     with gr.Row():
         # Adjust width to 80 or 100 so it's subtle but clear
-        gr.Image("1000006717-removebg-preview (1).png", show_label=False, width=90, container=False, interactive=False)
+        gr.Image("images (19).jpeg", show_label=False, width=80, container=False, interactive=False)
         gr.Markdown(f"""
-        # Atlasknowledge
+        # Atlas Knowledge
         ### Infrastructure IA Pédagogique — Atlantis
         """)
     gr.Markdown("## Upload a pdf file")
