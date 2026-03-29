@@ -27,6 +27,7 @@ def generate_response(prompt, pdf_file=None):
         with open (pdf_file, "rb") as f:
             pdf_bytes = f.read()
         model1 = "gemini-2.5-flash"
+        client = get_random_client()
         response = client.models.generate_content_stream(model=model1, contents=[prompt, types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")])
         partial_message = ""
         for chunk in response:
@@ -34,6 +35,7 @@ def generate_response(prompt, pdf_file=None):
             yield partial_message
      else:
         model1 = "gemini-2.5-flash"
+        client = get_random_client()
         response = client.models.generate_content_stream(model=model1, contents=prompt)
         partial_message=""
         for chunk in response:
