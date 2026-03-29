@@ -93,15 +93,16 @@ def get_pedagogical_report(selected_grade):
 
         director_prompt = f"""
         Tu es un expert en ingénierie pédagogique au Maroc. 
-        Voici les questions posées par les élèves de {selected_grade}, coincide le rapport avec la date d'aujourd'hui, et n'ecris pas [Votre nom] dans le sans le nom. soit concret avec votre reponse:
+        Voici les questions posées par les élèves de {selected_grade}, N'ecris pas la date, et n'ecris pas [Votre nom] dans le sans le nom. soit concret avec votre reponse:
         
         {logs}
         
         Rédige un rapport structuré pour la direction de l'école :
-        - TOP 3 des sujets les plus complexes.
+        - TOP 3 des sujets les plus complexes et les classer par le nombre de fois posée.
         - Analyse des blocages types.
         - Conseil stratégique pour le prochain cours.
         - Recommendation à destination du corps professoral.
+        - Un plan mensuelle sur comment augmenter le niveau des eleves pour chaque sujet.
         """
 
         for chunk in generate_response(director_prompt, None):
