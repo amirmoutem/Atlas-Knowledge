@@ -69,7 +69,11 @@ theme1 = gr.themes.Soft(
     body_text_color_subdued="*neutral_300",
 )
 
-with gr.Blocks() as demo:
+with gr.Blocks(title="AtlasKnowledge: Infrastructure IA Pédagogique") as demo:
+    gr.Markdown("""
+    # 🏛️ AtlasKnowledge
+    **Infrastructure IA Pédagogique Officielle**
+    """)
     gr.Markdown("## Upload a pdf file")
     file = gr.File(label="Upload PDF", file_types=[".pdf"])
     level_state = gr.State(value=None)
