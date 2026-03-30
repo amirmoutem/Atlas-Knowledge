@@ -7,17 +7,17 @@ def atlas_app(userinput, selected_grade, pdf_file = None, history=[]):
         for chunk in answer:
             yield chunk
 
-    elif selected_grade == "TC":
+    elif selected_grade == "2AC":
         answer = aibrain.atlasTC(userinput, pdf_file, history)
         for chunk in answer:
             yield chunk
 
-    elif selected_grade == "1BAC":
+    elif selected_grade == "1AC":
         answer = aibrain.atlas1BAC(userinput, pdf_file, history)
         for chunk in answer:
             yield chunk
 
-    elif selected_grade == "2BAC":
+    elif selected_grade == "CE6":
         answer = aibrain.atlas2BAC(userinput, pdf_file, history)
         for chunk in answer:
             yield chunk
