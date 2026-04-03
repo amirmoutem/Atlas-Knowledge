@@ -117,13 +117,11 @@ with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
         pass_input = gr.Textbox(label="Code d'accès", type="password")
         gen_btn = gr.Button("Générer le Rapport Stratégique", variant="primary")
         output_markdown = gr.Markdown()
-
-        gen_btn.click(
+    gen_btn.click(
          fn=handle_director_dashboard, 
          inputs=[grade_input, pass_input], 
          outputs=output_markdown
     )
-    
     
 
 demo.launch(theme=theme1, head=head_js)
