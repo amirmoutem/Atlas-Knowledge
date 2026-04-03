@@ -116,7 +116,7 @@ with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
         grade_input = gr.Dropdown(["Niveau","3AC", "2AC", "1AC", "CE6"], label="Classe")
         pass_input = gr.Textbox(label="Code d'accès", type="password")
         gen_btn = gr.Button("Générer le Rapport Stratégique", variant="primary")
-        output_markdown = gr.Markdown()
+    output_markdown = gr.Markdown()    
     gen_btn.click(
          fn=handle_director_dashboard, 
          inputs=[grade_input, pass_input], 
