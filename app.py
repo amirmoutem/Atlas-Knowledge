@@ -74,6 +74,12 @@ theme1 = gr.themes.Soft(
     block_label_text_color="*neutral_50",
     body_text_color_subdued="*neutral_300",
 )
+css = """
+footer {visibility: hidden}
+#component-0 {border: none !important;}
+.scroll-hide::-webkit-scrollbar {display: none;}
+header {display: none !important;}
+"""
 
 with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
     with gr.Row():
@@ -124,4 +130,4 @@ with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
     )
     
 
-demo.launch(theme=theme1, head=head_js)
+demo.launch(theme=theme1, head=head_js, css=css)
