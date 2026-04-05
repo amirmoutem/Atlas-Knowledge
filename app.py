@@ -75,11 +75,15 @@ theme1 = gr.themes.Soft(
     body_text_color_subdued="*neutral_300",
 )
 css = """
-footer {visibility: hidden}
-#component-0 {border: none !important;}
-.scroll-hide::-webkit-scrollbar {display: none;}
+#col-container {max-width: 100%; margin-left: auto; margin-right: auto;}
+footer {display: none !important;}
 header {display: none !important;}
+#root > div > div > div > header {display: none !important;}
+.gradio-container {padding-top: 0px !important;}
+/* This targets the HF space header specifically if it's injected */
+div[class^='Header'] {display: none !important;}
 """
+
 
 with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
     with gr.Row():
