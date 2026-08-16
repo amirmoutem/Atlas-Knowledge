@@ -1,4 +1,5 @@
 import gradio as gr
+import os
 from main import atlas_app
 import aibrain
 
@@ -54,7 +55,7 @@ def chat(user_input, history, level, pdf_file, request: gr.Request):
 
 
 def handle_director_dashboard(level, password):
-    if password == "ExcellenceX": 
+    if password == os.getenv("ADMIN_PASSWORD"):
         for chunk in aibrain.get_pedagogical_report(level):
             yield chunk
     else:
@@ -87,11 +88,10 @@ div[class^='Header'] {display: none !important;}
 
 with gr.Blocks(title="Atlasknowledge | Atlantis") as demo:
     with gr.Row():
-        # Adjust width to 80 or 100 so it's subtle but clear
-        gr.Image("images (19).jpeg", show_label=False, width=80, container=False, interactive=False)
+    
         gr.Markdown(f"""
         # Atlas Knowledge
-        ### Infrastructure IA Pédagogique — Atlantis
+        ### Infrastructure IA Pédagogique
         """)
     gr.Markdown("## Upload a pdf file")
     file = gr.File(label="Upload PDF", file_types=[".pdf"])
