@@ -131,3 +131,135 @@ flowchart TD
 This flowchart demonstrates how AtlasKnowledge acts when the student wants an explanation, where it first adapts to the users grade, then explains thoroughly using useful examples, then adds at the end a small quiz or question to test the student, then it decides based on the answer given, whether to re explain more clearly or not.
 
 ## Curriculum adaptation
+
+```mermaid
+flowchart TD
+    Student["Student"] --> GradeChoice{"Choose grade"}
+
+    subgraph GradePrompts["Grade-specific prompts"]
+        direction LR
+
+        CE6["CE6"] --> PromptCE6["Simple explanations<br/>and many examples"]
+        Grade1AC["1AC"] --> Prompt1AC["Easy-to-follow explanations<br/>bridging CE6's concrete, real-world lessons<br/>to 1AC's more abstract concepts"]
+        Grade2AC["2AC"] --> Prompt2AC["More detailed explanations<br/>for profound comprehension"]
+        Grade3AC["3AC"] --> Prompt3AC["Rigorous and detailed explanations<br/>to prepare for TC"]
+    end
+
+    GradeChoice -->|CE6| CE6
+    GradeChoice -->|1AC| Grade1AC
+    GradeChoice -->|2AC| Grade2AC
+    GradeChoice -->|3AC| Grade3AC
+
+    PromptCE6 --> Response["Gemini response"]
+    Prompt1AC --> Response
+    Prompt2AC --> Response
+    Prompt3AC --> Response
+
+    classDef student stroke:#818cf8,fill:#eef2ff
+    classDef choice stroke:#2dd4bf,fill:#f0fdfa
+    classDef grade stroke:#a78bfa,fill:#f5f3ff
+    classDef prompt stroke:#38bdf8,fill:#ecfeff
+    classDef output stroke:#fb923c,fill:#fff7ed
+    classDef group stroke:#818cf8,fill:#eef2ff
+
+    class Student student
+    class GradeChoice choice
+    class CE6,Grade1AC,Grade2AC,Grade3AC grade
+    class PromptCE6,Prompt1AC,Prompt2AC,Prompt3AC prompt
+    class Response output
+    class GradePrompts group
+```
+
+AtlasKnowledge uses specific pedagogical prompts for each grade level to facilitate clearer comprehension. and for 3AC rigorous explanations and exercises are needed to build the needed cognitive ability for Tronc Commun (First year of high school in Morocco). We put strong guardrails in place to make sure the engine doesn't drift off and give explanations that are too advanced for the specific grade. The interaction is also variable across the grades, whereas AtlasKnowledge expects a 3AC student to know negative and positive number addition and subtraction and doesn't expect a CE6 pupil to know these concepts.
+
+## Curriculum Grounding
+
+AtlasKnowledge is curriculum grounded by the master prompts. We explicitly tell the engine to primarily bring its info from well known Moroccan educational websites like Alloschool, Dyrassa and Moutamadris. We have implemented this to make AtlasKnowledges response more familiar to the student. Since if you ask a standard LLM i.e "Explain Vectors" it may add complex concepts not taught in 2AC or 3AC, while our engine outputs (depending on the grade) the exact concepts taught in that level.
+
+## API Architecture
+
+AtlasKnowledge API rotation technology to ensure stability of the engine. We will be using a diagram to detail the architecture of the system:
+
+Diagram: API rotation Architecture:
+
+```mermaid
+flowchart LR
+    apiKey1[API Key 1]
+    apiKey2[API Key 2]
+    apiKey3[API Key 3]
+    apiKey4[API Key 4]
+    apiKey5[API Key 5]
+    keyRotation[Key rotation]
+
+    apiKey1 --> keyRotation
+    apiKey2 --> keyRotation
+    apiKey3 --> keyRotation
+    apiKey4 --> keyRotation
+    apiKey5 --> keyRotation
+
+    classDef apiKeyStyle stroke:#818cf8,fill:#eef2ff
+    classDef processStyle stroke:#fb923c,fill:#fff7ed
+
+    class apiKey1,apiKey2,apiKey3,apiKey4,apiKey5 apiKeyStyle
+    class keyRotation processStyle
+```
+
+AtlasKnowledge rotates through API keys to ensure maximum stability and availability and to improve resilience when individual keys face availability or usage constraints.
+
+## PDF Interaction
+
+AtlasKnowledge features PDF interaction where the student can upload a specific lesson or exercise to explain and to make the ideas clearer. We will be using a diagram to explain in detail the mechanics of this feature:
+
+```mermaid
+flowchart TD
+    A[PDF Uploaded] --> B[Gemini Receives PDF]
+    B --> C[Content Interpreted and Analyzed]
+    C --> D[Grade-Specific Prompt Applied]
+    D --> E{Socratic Tutoring Type}
+    E -->|Explanation| F[Generate Detailed Explanation]
+    E -->|Exercise| G[Create Problem-Solving Guidance]
+    F --> H[Streaming Response]
+    G --> H
+    H --> I[Response Delivered to User]
+    
+    classDef input stroke:#818cf8,fill:#eef2ff
+    classDef process stroke:#38bdf8,fill:#f0f9ff
+    classDef decision stroke:#fb923c,fill:#fff7ed
+    classDef output stroke:#4ade80,fill:#f0fdf4
+    
+    class A input
+    class B,C,D process
+    class E decision
+    class F,G process
+    class H,I output
+```
+
+The user uploads a PDF to the app, then its contents get interpreted and analyzed. After that the grade specific prompt (determined by the grade chosen) gets bundled with the contents of the PDF. Then the engine determines if it is an explanation or an exercise, after that it applies the socratic constraints and outputs the response as streaming content to the user.
+
+## Administration Mode:
+
+AtlasKnowledge also features an administrative system as mentioned before. where the administration enters a specific protected password and chooses a grade. Then the users and a separate pedological report prompt gets bundled with the students anonymized data and gets sent to the engine which analyzes the data and outputs a comprehensive report including students most asked questions and confusing concepts, and advice to the professors and the administration of the school to paint a clearer picture of the educational state of the classroom.
+
+## Tech Stack:
+
+| Component           | Technology             |
+| ------------------- | ---------------------- |
+| Language            | Python                 |
+| Interface           | Gradio                 |
+| AI                  | Google Gemini API      |
+| Mathematical output | LaTeX                  |
+| Deployment          | Hugging Face Spaces    |
+| Memory              | Conversational history |
+| Document input      | Gemini PDF processing  |
+
+- We chose python as the language for its compatibility with many AI libraries and the google-genai SDK.
+- We implemented Gradio as the UI and UX for its focus on AI apps
+- We used the Gemini API as the engine for its ability to process multimodal and multilingual inputs and its stability
+- We deployed on HF spaces for the reliability of world-class servers
+- We decided using native Gemini PDF processing feature to make the link between PDF input and the engine seamless.
+
+## Project Architecture
+
+AtlasKnowledge is divided into 5 main python files:
+
+- main.py:
