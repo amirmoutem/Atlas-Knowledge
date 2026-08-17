@@ -1,11 +1,20 @@
 # AtlasKnowledge
 
-AtlasKnowledge is an AI socratic engine specializing in the moroccan curriculum from CE6 to 3AC (6th grade to 9th grade).
+**AtlasKnowledge is a curriculum-aware Socratic AI tutoring engine designed specifically for the Moroccan education system, from CE6 to 3AC.**
 
-This is a live demo of the apps interface, but you will need to enter your own keys: https://huggingface.co/spaces/TuteurIA/SYS_OPS_BK_V1/blob/main/app.py
+Unlike conventional LLM-based tutors that often provide complete solutions, AtlasKnowledge is designed to guide students toward solutions through progressive hints, grade-specific explanations, questioning, and feedback.
 
-This document will explain in detail how this model works.
+The system combines:
+- Grade-specific pedagogical prompting
+- Socratic exercise guidance
+- Curriculum grounding
+- Conversational memory
+- PDF-based tutoring
+- Multilingual interaction
+- LaTeX mathematical rendering
+- Anonymized pedagogical analytics for administrators
 
+AtlasKnowledge is implemented entirely in Python using the Gemini API and Gradio.
 ## The Problem
 
 Modern society has seen an invention that has changed the way we learn and think, and that invention is Artificial Intelligence. AI has affected the education sector greatly, where here in Morocco and the entire world, students use AI everyday for their studies, either for help, explanations or solutions. LLMs are great at solving problems, but this ability could undermine the students learning. Where a student asks for help and gets a direct solution instead of developing the method and cognitive ability to solve the problem. That's why I created AtlasKnowledge, which was designed thoroughly to make the LLM behave and act more like a tutor and teacher rather than an answer machine.
@@ -55,7 +64,7 @@ flowchart TD
     class StreamingOutput outputNode
 ```
 
-This Flow chart visualizes how the system works. The student chooses his specific grade (CE6 to 3AC) one time, the system puts that in lock. then he inputs his specific question. when he sends the message, it is bundled with the recent conversation history and the specific prompt for the grade chosen and the master prompt that has the socratic boundaries needed for the engine. all of this content is then transferred to the Gemini API, and finally the AIs output is passed into a latex renderer which is then outputted to the user as streamed content to give the illusion of instant reply.
+This Flow chart visualizes how the system works. The student chooses his specific grade (CE6 to 3AC) one time, the system puts that in lock. then he inputs his specific question. when he sends the message, it is bundled with the recent conversation history and the specific prompt for the grade chosen and the master prompt that has the socratic boundaries needed for the engine. all of this content is then transferred to the Gemini API, and finally the AIs output is passed into a latex renderer which is then outputted to the user. The response is streamed progressively to the interface, reducing perceived latency and allowing the student to begin reading before the complete response has been generated.
 
 ## The Socratic Engine
 
@@ -95,7 +104,7 @@ flowchart TD
     class Clearer,Feedback feedback
 ```
 
-As we can observe, the LLM first asks if the student needs guidance, if yes, then it will give progressive hints until the student finds the solution. if not, in the case of inputting solutions, if it is wrong, it will give constructive feedback
+As we can observe, the LLM first asks itself if the student needs guidance, if yes, then it will give progressive hints until the student finds the solution. if not, in the case of inputting solutions, if it is wrong, it will give constructive feedback
 
 Diagram 2: asking for an explanation 
 
@@ -174,11 +183,11 @@ AtlasKnowledge uses specific pedagogical prompts for each grade level to facilit
 
 ## Curriculum Grounding
 
-AtlasKnowledge is curriculum grounded by the master prompts. We explicitly tell the engine to primarily bring its info from well known Moroccan educational websites like Alloschool, Dyrassa and Moutamadris. We have implemented this to make AtlasKnowledges response more familiar to the student. Since if you ask a standard LLM i.e "Explain Vectors" it may add complex concepts not taught in 2AC or 3AC, while our engine outputs (depending on the grade) the exact concepts taught in that level.
+AtlasKnowledge is curriculum grounded by the master prompts. We explicitly tell the engine in the system prompt to primarily bring its info from well known Moroccan educational websites like Alloschool, Dyrassa and Moutamadris. We have implemented this to make AtlasKnowledges response more familiar to the student. Since if you ask a standard LLM i.e "Explain Vectors" it may add complex concepts not taught in 2AC or 3AC, while our engine outputs (depending on the grade) the exact concepts taught in that level.
 
 ## API Architecture
 
-AtlasKnowledge API rotation technology to ensure stability of the engine. We will be using a diagram to detail the architecture of the system:
+AtlasKnowledge API key management technology to ensure stability of the engine. We will be using a diagram to detail the architecture of the system:
 
 Diagram: API rotation Architecture:
 
@@ -204,7 +213,7 @@ flowchart LR
     class keyRotation processStyle
 ```
 
-AtlasKnowledge rotates through API keys to ensure maximum stability and availability and to improve resilience when individual keys face availability or usage constraints.
+AtlasKnowledge selects randomly API keys to ensure maximum stability and availability and to improve resilience when individual keys face availability or usage constraints.
 
 ## PDF Interaction
 
@@ -236,6 +245,25 @@ flowchart TD
 
 The user uploads a PDF to the app, then its contents get interpreted and analyzed. After that the grade specific prompt (determined by the grade chosen) gets bundled with the contents of the PDF. Then the engine determines if it is an explanation or an exercise, after that it applies the socratic constraints and outputs the response as streaming content to the user.
 
+## Design Principles
+
+AtlasKnowledge was built around several core principles and values:
+
+### 1. Guide, don't solve
+The engine should help the student develop the reasoning required to reach a solution rather than immediately providing the final answer.
+
+### 2. Teach at the student's level
+Explanations, terminology, examples, and expected knowledge are adapted to the selected grade.
+
+### 3. Stay within the curriculum
+The engine is instructed to remain aligned with the concepts and methods expected at the student's level.
+
+### 4. Encourage active participation
+The student is repeatedly asked to reason, answer questions, and attempt intermediate steps.
+
+### 5. Prefer transparency over automation
+The system is designed as a tutoring assistant rather than a replacement for the teacher.
+
 ## Administration Mode:
 
 AtlasKnowledge also features an administrative system as mentioned before. where the administration enters a specific protected password and chooses a grade. Then the users and a separate pedological report prompt gets bundled with the students anonymized data and gets sent to the engine which analyzes the data and outputs a comprehensive report including students most asked questions and confusing concepts, and advice to the professors and the administration of the school to paint a clearer picture of the educational state of the classroom.
@@ -255,11 +283,66 @@ AtlasKnowledge also features an administrative system as mentioned before. where
 - We chose python as the language for its compatibility with many AI libraries and the google-genai SDK.
 - We implemented Gradio as the UI and UX for its focus on AI apps
 - We used the Gemini API as the engine for its ability to process multimodal and multilingual inputs and its stability
-- We deployed on HF spaces for the reliability of world-class servers
+- We deployed on HF spaces for the reliability of its servers
 - We decided using native Gemini PDF processing feature to make the link between PDF input and the engine seamless.
 
 ## Project Architecture
 
 AtlasKnowledge is divided into 5 main python files:
 
-- main.py:
+- main.py: this is the file that is responsible for grade routing and uses the aibrain.py functions to output the response which then is sent to app.py.
+- app.py: this file is responsible for the UI/UX and to show the user the output generated by aibrain.py and passed through main.py.
+- aibrain.py: Core engine responsible for API-key management, PDF processing, response generation, and administrative report generation.
+- memory.py: it is responsible for saving the users question and the engines output as conversational history and it bundles the history with the master prompts from prompt.py to be given to aibrain.py.
+- prompt.py: this file contains all the necessary prompts for each grade excluding the pedagogical prompt. it is imported to memory.py.
+  
+We chose this architecture to make debugging and implementing new features easier and faster.
+
+## Development Story
+
+Development started around 6 months ago, when I was myself a 3AC student, I wanted to create an AI tutor for Morocco to help myself and my classmates. 
+So the first features implemented were the backend and the prompts. I started experimenting with different Gemini models and prompts, I landed on gemini 2.5 flash since it was cost effective and fast. At first, I made one single system prompt for all grades, but then I made multiple prompts, one for each grade for better personalization, and I added latex rendering too. After that I started researching for a python based UI framework for AI apps and I found Gradio. So I learnt the framework and implemented it to the system. Then I was brainstorming for new features, so I changed the prompts to be socratic, added API key rotation and the administrative system. then it was tested with around 5-10 of my classmates who returned positive feedback. It was also presented to multiple school directors, who reported that it is a good idea but that they want to return to traditional methods of schooling. It was deployed on hugging face spaces.
+
+## Evaluation And Feedback
+
+AtlasKnowledge was informally tested by approximately 5–10 students, who reported that the system was useful for studying and that its explanations and guided approach helped them work through problems. AtlasKnowledge was compared informally with Other LLMs (Gemini 3.0 flash, GPT model) with 15 questions covering middle school math, physics and SVT. It was observed that standard LLMs produced straight solutions to exercises, dry explanations, and advanced concepts. While AtlasKnowledge gave hints to students instead of solutions, easy to follow explanations and grade level concepts. However, it was noted that standard LLMs gave more detailed solutions and elegant proofs than AtlasKnowledge. It was presented to school directors who expressed interest but were more cautious about implementing it in their schools amid concerns about dependency of students on the tool.
+
+## Limitations
+
+Their are many limitations to AtlasKnowledge for example:
+
+- Limited User Base
+- no formal testing or educational study
+- No verification of the engines mathematical solutions
+- Dependence on external servers
+- Rate limits
+- curriculum grounding is based on the quality of the websites
+- General stability problems.
+
+In the future, we will aim to fix these problems and to make AtlasKnowledge more accessible and smarter.
+
+## Future Roadmap
+
+Near Term:
+- The creation of a dataset focused with questions to benchmark formally with other LLMs
+- Broader Student Testing
+- Implementing model fallback system
+- Implementing mathematical verification of the engines output
+
+Far Term:
+- Increasing UserBase to many schools
+- Usage Analytics
+- Improved Administrative Tools
+- Additional  Moroccan Grades
+- Account login and Database
+
+Together, we could make AtlasKnowledge the tool that will help thousands of students across Morocco who don't have the resources to afford tutoring
+
+## Thank You!
+
+I would like to thank you immensely for your time and attention to this project, I welcome you to contribute to this project.
+
+Author: Mohamed Amir Moutem
+Email: amirmoutem19@gmail.com
+Age: 15
+Github: I think you already know :)
