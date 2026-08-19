@@ -1,17 +1,17 @@
 # AtlasKnowledge
 
-**AtlasKnowledge is a curriculum-aware Socratic AI tutoring engine designed specifically for the Moroccan education system, from CE6 to 3AC.**
+**AtlasKnowledge is a Socratic AI tutoring engine designed for the Moroccan education system, from CE6 to 3AC.**
 
-Unlike conventional LLM-based tutors that often provide complete solutions, AtlasKnowledge is designed to guide students toward solutions through progressive hints, grade-specific explanations, questioning, and feedback.
+Unlike conventional LLM-based tutors that often provide complete solutions and little to no explanation, AtlasKnowledge is designed to guide students toward solutions through progressive hints, grade-specific explanations, questioning, and feedback.
 
 The system combines:
 - Grade-specific pedagogical prompting
 - Socratic exercise guidance
 - Curriculum grounding
 - Conversational memory
-- PDF-based tutoring
+- PDF input
 - Multilingual interaction
-- LaTeX mathematical rendering
+- LaTeX rendering
 - Anonymized pedagogical analytics for administrators
 
 AtlasKnowledge is implemented entirely in Python using the Gemini API and Gradio.
